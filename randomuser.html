@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RandomUser</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-stone-800">
+    <div id="app">
+      <div class="container mx-auto text-stone-300">
+        <div class="mb-5 pt-3">
+          <span class="text-5xl font-bold mr-8">RandomUser</span>
+          <button
+            type="button"
+            class="py-1 px-3 rounded outline outline-1 outline-white mr-3"
+            @click="getData"
+          >
+            換一組
+          </button>
+          <button
+            type="button"
+            class="py-1 px-3 rounded outline outline-1 outline-white mr-3"
+            @click="switchImg"
+          >
+            切換大頭貼解析度
+          </button>
+          現在圖片解析度：
+          <span
+            class="text-xl font-bold text-orange-200"
+            v-if="imgType === 'large'"
+            >清晰</span
+          >
+          <span
+            class="text-xl font-bold text-orange-200"
+            v-if="imgType === 'medium'"
+            >中等</span
+          >
+          <span
+            class="text-xl font-bold text-orange-200"
+            v-if="imgType === 'thumbnail'"
+            >模糊</span
+          >
+        </div>
+        <article
+          class="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 pb-3 text-stone-300"
+        >
+          <div
+            class="relative bg-stone-900 shadow-lg shadow-stone-900 rounded overflow-hidden"
+            v-for="user in users"
+            :key="user.login.uuid"
+          >
+            <div class="absolute top-5 right-5">
+              <button
+                type="button"
+                class="py-1 px-2 bg-black/50 rounded-[10%]"
+                @click="user.showHeart = !user.showHeart"
+              >
+                <span class="text-2xl" title="愛心" v-show="user.showHeart"
+                  >❤️</span
+                >
+                <span class="text-2xl" title="取消愛心" v-show="!user.showHeart"
+                  >🤍</span
+                >
+              </button>
+            </div>
+
+            <img
+              :src="user.picture[imgType]"
+              alt="人像相片"
+              class="w-full aspect-square"
+            />
+            <div class="flex flex-col gap-3 p-5">
+              <p class="text-2xl font-bold text-amber-600">
+                {{ user.name.first}}&nbsp;{{user.name.last }}&nbsp;
+                <span v-if="user.gender === 'male'">👨</span>
+                <span v-if="user.gender === 'female'">👩</span>
+              </p>
+              <p>
+                Email：
+                <a
+                  :href="user.email"
+                  class="underline text-orange-200 decoration-orange-200 break-all"
+                >
+                  {{ user.email }}
+                </a>
+              </p>
+              <p>
+                Phone：
+                <a
+                  :href="user.phone"
+                  class="underline text-orange-200 decoration-orange-200"
+                >
+                  {{ user.phone }}
+                </a>
+              </p>
+              <p>
+                Cell：
+                <a
+                  :href="user.cell"
+                  class="underline text-orange-200 decoration-orange-200"
+                >
+                  {{ user.cell }}
+                </a>
+              </p>
+              <p>City：{{ user.location.city }}</p>
+              <p>State：{{ user.location.state }}</p>
+              <p>Country：{{ user.location.country }}</p>
+              <p>Postcode：{{ user.location.postcode }}</p>
+              <p>
+                Address：{{
+                user.location.city}}&nbsp;{{user.location.state}}&nbsp;{{user.location.country}}&nbsp;{{user.location.postcode}}
+              </p>
+              <p>Time Zone：{{ user.location.timezone.description }}</p>
+              <p>
+                <small>BirthDay：{{ user.dob.date.slice(0, 10) }}</small>
+              </p>
+              <p>
+                <small
+                  >registered in：{{ user.registered.date.slice(0, 10) }}</small
+                >
+              </p>
+              <iframe
+                width="100%"
+                height="300"
+                frameborder="0"
+                scrolling="no"
+                marginheight="0"
+                marginwidth="0"
+                src="https://maps.google.com.tw/maps?f=q&amp;hl=zh-TW&amp;geocode=&amp;q=29.4248,-99.7754&amp;z=10&amp;output=embed"
+              ></iframe>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./randomuser.js"></script>
+  </body>
+</html>
